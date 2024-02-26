@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html>
+<head>
+	<style>
+		h1 {
+			color: black;
+			font-size: 50px;
+			font-weight: bold;
+			text-transform: uppercase;
+			margin-top: 20px;
+			text-align: center;
+			margin: 0 auto;
+		}
+
+		.btn-container {
+			display: flex;
+			justify-content: space-between;
+			margin-top: 20px;
+		}
+
+		.btn-container button,
+		.btn-container input[type="submit"] {
+			margin-right: 10px;
+		}
+
+		.btn-container button a {
+			color: white; /* Set font color to white for other buttons */
+			text-decoration: none; /* Remove underline */
+		}
+
+		/* Style for the Cancel button */
+		.red-text {
+			color: #ffffff; /* Set font color to red for the Cancel button */
+		}
+	</style>
+	<title>{{title}}</title>
+</head>
+<body>
+	<main role="main" class="container">
+		<div class="jumbotron" style="background-color: #f1e8e8; color: #ffffff; border: 3px solid black;">
+		  <h1>Motor</h1>
+		  <form method='POST' action=''>{% csrf_token %}
+			{{form|crispy}}
+			<button class="btn btn-dark btn-lg button1" style="background-color: #b33008;">
+                <a href="{% url 'motor' %}" style="color: #ffffff;">CANCEL</a>
+            </button>
+            <input type="submit" value='SUBMIT' class="btn btn-dark btn-lg pull-right" style="background-color: #435d7d;">
+		</form>
+		</div>
+	  </main>
+	  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+			<script>window.jQuery || document.write('<script src="/docs/4.4/assets/js/vendor/jquery.slim.min.js"><\/script>')</script><script src="/docs/4.4/dist/js/bootstrap.bundle.min.js" integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm" crossorigin="anonymous"></script></body>
+	
+</body>
+</html>
+{% endblock %}

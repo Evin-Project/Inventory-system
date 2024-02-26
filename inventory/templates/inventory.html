@@ -1,0 +1,283 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Bootstrap CRUD Data Table for Database with Modal Form</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+<link href="https://unpkg.com/bootstrap-table@1.22.1/dist/bootstrap-table.min.css" rel="stylesheet">
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+
+<script src="https://unpkg.com/bootstrap-table@1.22.1/dist/bootstrap-table.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<style>
+    .button {
+	  background-color: #435d7d; 
+	  border: none;
+	  color: #435d7d;
+	  padding: 15px 32px;
+	  text-align: center;
+	  text-decoration: none;
+	  display: inline-block;
+	  font-size: 16px;
+	  margin: 4px 2px;
+	  cursor: pointer;
+	}
+	
+	.button1 {width: 150px;}
+	.button2 {width: 200px;}
+	.button3 {width: 200px;}
+	.button4 {width: 200px;}
+	.button5 {width: 150px;}
+	.button6 {width: 150px;}
+
+	 /* Style the search bar */
+	 .dataTables_filter {
+            text-align: right; /* Align the search bar to the right if needed */
+            margin-bottom: 10px; /* Add margin for spacing if needed */
+        }
+        
+        .dataTables_filter input {
+            width: 200px; /* Set the width of the search input */
+            padding: 5px; /* Add padding for spacing inside the input */
+            border: 1px solid #ccc; /* Add a border */
+            border-radius: 5px; /* Add rounded corners */
+            font-size: 14px; /* Adjust the font size as needed */
+            background-color: #f8f8f8; /* Background color for the input */
+        }
+        
+        /* Apply a hover effect to the search input */
+        .dataTables_filter input:hover {
+            background-color: #fff; /* Change the background color on hover */
+        }
+        
+        .dataTables_filter label {
+            font-size: 22px; /* Adjust the font size as needed */
+        }
+        
+        /* Style the "Show entries" label and dropdown */
+        .dataTables_length {
+            text-align: left; /* Align to the left or adjust as needed */
+            margin-bottom: 10px; /* Add margin for spacing if needed */
+        }
+        
+        /* Style the dropdown select element */
+        .dataTables_length select {
+            width: 65px; /* Set the width of the dropdown as needed */
+            padding: 5px; /* Add padding for spacing inside the select element */
+            border: 1px solid #ccc; /* Add a border */
+            border-radius: 5px; /* Add rounded corners */
+            font-size: 15px; /* Adjust the font size as needed */
+            background-color: #f8f8f8; /* Background color for the select */
+        }
+        
+        /* Apply a hover effect to the select element */
+        .dataTables_length select:hover {
+            background-color: #fff; /* Change the background color on hover */
+        }
+        
+        /* Style the "entries" label or information text */
+        .dataTables_info {
+            margin-bottom: 10px; /* Add margin for spacing if needed */
+            font-size: 18px; /* Adjust the font size as needed */
+        }
+        
+        .dataTables_length label {
+            font-size: 22px; /* Adjust the font size as needed */
+        }
+
+		/* Center-align the text in thead and tbody */
+		#inventory thead th,
+		#inventory tbody td {
+			text-align: center;
+		}
+
+		/* Auto-fit the columns with ellipsis for overflow */
+		#inventory th,
+		#inventory td {
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			overflow: hidden;
+		}
+
+		/* Additional styling for better visibility of ellipsis */
+		#inventory th,
+		#inventory td {
+			max-width: 200px; /* Set a maximum width for better visibility */
+			padding: 8px; /* Add padding for better spacing */
+		}
+
+		/* Responsive table for small screens */
+		@media only screen and (max-width: 600px) {
+			#inventory thead th,
+			#inventory tbody td {
+				display: block;
+				width: 100%;
+				box-sizing: border-box;
+				text-align: center;
+			}
+		}
+		.table-responsive {
+		overflow: auto;
+	}
+
+    /* Add style for the filter select */
+    #filterSelect {
+    font-size: 15px;
+    margin-top: 10px;
+    width: 100px; /* Set the width of the select */
+    margin-right: 17px; /* Set right margin to auto */
+    margin-left: auto; /* Set left margin to auto */
+}
+</style>
+<script>
+    $(document).ready(function(){
+        // Activate tooltip
+        $('[data-toggle="tooltip"]').tooltip();
+
+        // Select/Deselect checkboxes
+        var checkbox = $('table tbody input[type="checkbox"]');
+        $("#selectAll").click(function(){
+            if(this.checked){
+                checkbox.each(function(){
+                    this.checked = true;                        
+                });
+            } else{
+                checkbox.each(function(){
+                    this.checked = false;                        
+                });
+            } 
+        });
+        checkbox.click(function(){
+            if(!this.checked){
+                $("#selectAll").prop("checked", false);
+            }
+        });
+
+        // DataTables initialization
+        var table = $('#inventory').DataTable({
+            "paging": true,
+            "lengthMenu": [10, 25, 50, 100],
+            "pageLength": 10,
+            "searching": true,
+            "ordering": false,
+            "responsive": true,
+            "autoWidth": false,
+            // Additional parameters and configurations as needed
+        });
+
+        // Add an event listener to the filter select
+        $("#filterSelect").change(function() {
+            var filterValue = $(this).val();
+            // Use DataTables API to filter the table based on the selected option
+            table.column(6).search(filterValue).draw(); // Assuming the "STATUS" column is the 7th column (index 6)
+        });
+
+        $("#transferOutBtn").click(function() {
+            var selectedRecords = [];
+            $("table tbody input[type='checkbox']:checked").each(function(){
+                selectedRecords.push($(this).closest('tr').find('td:eq(1)').text());  // Assuming the receive number is in the second column
+            });
+
+            // Redirect to the "addtransferout" page with the selected records
+            window.location.href = "{% url 'addtransferout' %}?selectedRecords=" + selectedRecords.join(',');
+        });
+    });
+</script>
+
+</head>
+<body>
+    <div class="text-center">
+        <!-- Your existing buttons -->
+        <a class="btn btn-lg button1" href="{% url 'addreceive' %}" style="background-color: #435d7d; color: #ffffff;">DELIVERY IN</a>
+        <a class="btn btn-dark btn-lg button2" href="{% url 'addtransferout' %}" style="background-color: #435d7d; color: #ffffff;">TRANSFER OUT</a>
+        <a class="btn btn-dark btn-lg button3" href="{% url 'transferin' %}" style="background-color: #435d7d; color: #ffffff;">TRANSFER IN</a>
+        <a class="btn btn-dark btn-lg button4" href="{% url 'addcustomerreleased' %}" style="background-color: #435d7d; color: #ffffff;">RELEASE OUT</a>
+        <a class="btn btn-dark btn-lg button5" href="{% url 'addrepoin' %}" style="background-color: #435d7d; color: #ffffff;">REPO IN</a>
+        <a class="btn btn-dark btn-lg button6" href="{% url 'addrepoout' %}" style="background-color: #435d7d; color: #ffffff;">REPO OUT</a>
+    </div>
+    <div class="container-xl">
+        <div class="table-responsive">
+            <div class="table-wrapper">
+                <div class="table-title">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h2>INVENTORY</h2>
+                        </div>
+                        <div class="col-sm-6">
+                            <a href="{% url 'addtransferin' %}" class="btn btn-success" style="background-color: #ffc000; color: #ffffff;">
+                                <i class="material-icons">&#xE147;</i> <span>TRANSFER IN FORM</span>
+                            </a>
+                        </div>
+					
+						<!-- Add the filter select element -->
+						<select id="filterSelect" class="form-control">
+							<option value="">All</option>
+							<option value="Brand New">Brand New</option>
+							<option value="Repo In">Repo In</option>
+						</select>
+                    </div>
+                </div>
+                <table id="inventory" class="table" data-toggle="table">
+                    <thead class="text-center">
+                        <tr>
+                            <th></th>
+                            <th>RECEIVE NUMBER</th>
+                            <th>MOTOR</th>
+                            <th>MOTOR COLOR</th>
+                            <th>FRAME NUMBER</th>
+                            <th>ENGINE NUMBER</th>
+                            <th>STATUS</th>
+                            <th>ACTIONS</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center">
+                        {% for record in filtered_records %}
+                        <tr>
+                            <td>
+                                <input type="checkbox" class="checkbox">
+                            </td>
+                            <td>{{ record.receive }}</td>
+                            <td>{{ record.motor }}</td>
+                            <td>{{ record.motor_color }}</td>
+                            <td>{{ record.frame_number }}</td>
+                            <td>{{ record.engine_number }}</td>
+                            <td>{{ record.status }}</td>
+                            <td>
+                                <a href="{% url 'updateinventory' record.id %}" class="edit">
+                                    <i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <div class="text-center">
+                    <button onclick="printTable()" class="btn btn-dark btn-lg" style="background-color: #435d7d; color: #ffffff; margin-top: 10px;">PRINT</button>
+                </div>
+            </div>
+            
+            <script>
+                function printTable() {
+                    window.print();
+                }
+            </script>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+{% endblock %}

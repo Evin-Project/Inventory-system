@@ -1,0 +1,159 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" type="text/css" href="{% static 'bootstrap/bootstrap.min.css' %}">
+<!-- font awesome cdn -->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" 
+integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+
+<!-- Main CSS, then Sidebar CSS and Dialog Box CSS -->
+<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">    
+<link rel="stylesheet" type="text/css" href="{% static 'css/sidebar.css' %}">    
+<link rel="stylesheet" type="text/css" href="{% static 'css/dialogbox.css' %}">    
+
+<style>
+.sidebar {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #435d7d;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+
+.sidebar a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 20px;
+  color: #f1f1f1;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidebar a:hover {
+  color: #f1f1f1;
+}
+
+.sidebar .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+  color: white;
+}
+
+.openbtn {
+  font-size: 20px;
+  cursor: pointer;
+  background-color: #435d7d;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+}
+
+.openbtn:hover {
+  background-color: #444;
+}
+
+#main {
+  transition: margin-left .5s;
+  padding: 16px;
+  display: inline-block;
+  width: 44px;
+  height: 34px;
+  margin-left: 15px;
+  }
+
+@media screen and (max-height: 450px) {
+  .sidebar {padding-top: 15px;}
+  .sidebar a {font-size: 18px;}
+}
+
+</style>
+</head>
+<body>
+    <script>
+        function openNav() {
+        document.getElementById("mySidebar").style.width = "250px";
+        document.getElementById("main").style.marginLeft = "250px";
+    }
+
+    function closeNav() {
+        document.getElementById("mySidebar").style.width = "0";
+        document.getElementById("main").style.marginLeft = "0";
+    }
+
+    </script>
+<div id="mySidebar" class="sidebar">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">
+        <i class="fa fa-window-close" aria-hidden="true"></i>
+    </a>
+
+</br>
+
+    <div>
+      <a class="navbar-brand titlefont mr-4" href="#">
+          <img src="{% static 'images/new_nemar1.png' %}" alt="Logo" style="max-height: 100px; max-width: 200px;">
+      </a>
+    </div>
+    <ul class="list-unstyled sidebar-components">
+        {# <p class="sidebar-paragraph">Dummy Heading</p> #}
+        <li> 
+            <a class="sidebar-text sidebar-button" href="{% url 'inventory' %}"><i class="fas fa-home"></i> Home</a>
+        </li>
+        <li>
+          <a href="#transactionSubmenu" data-toggle="collapse" class="dropdown-toggle sidebar-text right-arrow sidebar-button"><i class="fas fa-exchange-alt"></i> Transaction</a>
+          <ul class="collapse list-unstyled" id="transactionSubmenu">
+              <li> <a class="sidebar-text sidebar-subitem sidebar-button" href="{% url 'transferout' %}"><i class="fas fa-file-export"></i> Transfer Out</a> </li>
+            </ul>
+      </li>
+
+      <li>
+        <a href="#salesSubmenu" data-toggle="collapse" class="dropdown-toggle sidebar-text right-arrow sidebar-button"><i class="fas fa-dollar-sign"></i> Sales</a>
+        <ul class="collapse list-unstyled" id="salesSubmenu">
+          <li> <a class="sidebar-text sidebar-subitem sidebar-button" href="{% url 'customerreleased' %}"><i class="fa fa-shopping-cart"></i> Customer Released</a> </li>
+          <li> <a class="sidebar-text sidebar-subitem sidebar-button" href="{% url 'repoout' %}"><i class="fa fa-shopping-cart"></i> Repo Out</a> </li>
+          </ul>
+      </li>    
+
+        <li>
+            <a href="#customerSubmenu" data-toggle="collapse" class="dropdown-toggle sidebar-text right-arrow sidebar-button"><i class="fas fa-user"></i> Customer</a>
+            <ul class="collapse list-unstyled" id="customerSubmenu">
+                <li> <a class="sidebar-text sidebar-subitem sidebar-button" href="{% url 'customer' %}"><i class="fas fa-user"></i> Customer</a> </li>
+                <li> <a class="sidebar-text sidebar-subitem sidebar-button" href="{% url 'comaker' %}"><i class="fas fa-handshake"></i> Comaker</a> </li>
+                <li> <a class="sidebar-text sidebar-subitem sidebar-button" href="{% url 'payment' %}"><i class="fas fa-money-bill-wave"></i> Payment</a> </li>
+              </ul>
+        </li>
+
+        <li> 
+          <a class="sidebar-text sidebar-button" href="{% url 'supplier' %}"><i class="fas fa-warehouse"></i> Supplier</a>
+        </li>
+        <li> 
+          <a class="sidebar-text sidebar-button" href="{% url 'motor' %}"><i class="fas fa-motorcycle"></i> Motor</a>
+        </li>  
+        <li class="bottomleft">
+            <a href="#UserSubmenu" data-toggle="collapse" class="dropdown-toggle sidebar-text right-arrow sidebar-button"><i class="fas fa-user-circle"></i> {{ request.user.username }}</a>
+            <ul class="collapse list-unstyled" id="UserSubmenu">
+                    <li> <a class="sidebar-text sidebar-subitem sidebar-button" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a> </li>
+            </ul>
+        </li>
+    </ul>
+</div>
+<div class="navbar-header"  id="main">
+    <button class="openbtn active" onclick="openNav()">
+        <i class="fa fa-bars" aria-hidden="true"></i>  
+    </button>  
+</div>
+</body>
+</html>

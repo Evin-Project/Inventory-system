@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        h1 {
+            color: black;
+            font-size: 50px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-top: 20px;
+            text-align: center;
+            margin: 0 auto;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .btn-container button,
+        .btn-container input[type="submit"] {
+            margin-right: 10px;
+        }
+
+        .btn-container button a {
+            color: white; /* Set font color to white for other buttons */
+            text-decoration: none; /* Remove underline */
+        }
+
+    </style>
+    <title>{{ title }}</title>
+</head>
+<body>
+    <main role="main" class="container">
+        <div class="jumbotron" style="background-color: #f1e8e8; color: #ffffff; border: 3px solid black;">
+            <h1>Add Transfer In</h1>
+            <form method="POST" id="receive-form" action="{% url 'addtransferin' %}">{% csrf_token %}
+                {{ form|crispy }}
+                <button class="btn btn-dark btn-lg button1" style="background-color: #b33008;">
+                    <a href="{% url 'inventory' %}" style="color: #ffffff;">CANCEL</a>
+                </button>
+                <input type="submit" value="NEXT" class="btn btn-dark btn-lg pull-right" style="background-color: #435d7d;"/>
+            </form>
+        </div>
+    </main>
+</body>
+</html>
+
+{% endblock %}

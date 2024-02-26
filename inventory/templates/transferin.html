@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Bootstrap CRUD Data Table for Database with Modal Form</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src=https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container-xl">
+        <div class="table-responsive">
+            <div class="table-wrapper">
+                <div class="table-title">
+                    <div class="row">
+                        <div class="text-center">
+                            <h2>TRANSFER IN</h2>
+                        </div>
+                    </div>
+                </div>
+                <table id="transferin" class="table">
+                    <thead class="text-center">
+                        <tr>
+                            <th>STATUS</th>
+                            <th>TRANSFER FROM</th>
+                            <th>CONTROL NUMBER</th>
+                            <th>DATE OUT</th>
+                            <th>DATE IN</th>
+                            <th>INVENTORY<br>(RR NUMBER / MODEL)</th>
+                            <th>ACTIONS</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center">
+                        {% for instance in queryset %}
+                        <tr>
+                            <td>{{ instance.status }}</td>
+                            <td>{{ instance.transferfrom }}</td>
+                            <td>{{ instance.controlnumber }}</td>
+                            <td>{{ instance.transferout_date }}</td>
+                            <td>{{ instance.transferin_date }}</td>
+                            <td>{{ instance.inventory }}</td>
+                            <form method="post" action="{% url 'transferin' instance.id %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="accept_button" value="{{ instance.id }}">
+                                <td>
+                                    <button type="submit" class="btn btn-success" name="accept_transfer" id="acceptButton">
+                                        Accept
+                                    </button>
+                                </td>
+                            </form>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+{% endblock %}

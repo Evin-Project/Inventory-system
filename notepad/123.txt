@@ -1,0 +1,67 @@
+  <table class="table">
+    <thead class="table-dark">
+        <tr>
+          <th scope="col">RR NUMBER</th>
+          <th scope="col">PO NUMBER</th>
+          <th scope="col">SUPPLIER</th>
+          <th scope="col">BRANCH</th>
+          <th scope="col">STS NUMBER</th>
+          <th scope="col">DELIVERY DATE</th>
+          <th scope="col">TERMS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">1</th>
+          <td>Mark</td>
+          <td>Otto</td>
+          <td>@mdo</td>
+        </tr>
+        <tr>
+          <th scope="row">2</th>
+          <td>Jacob</td>
+          <td>Thornton</td>
+          <td>@fat</td>
+        </tr>
+        <tr>
+          <th scope="row">3</th>
+          <td colspan="2">Larry the Bird</td>
+          <td>@twitter</td>
+        </tr>
+      </tbody>
+    </table>
+
+<table class="table">
+  <thead class="table-dark" >
+      <tr class="text-center">
+        <th scope="col">RR NUMBER</th>
+        <th scope="col">PO NUMBER</th>
+        <th scope="col">SUPPLIER</th>
+        <th scope="col">BRANCH</th>
+        <th scope="col">STS NUMBER</th>
+        <th scope="col">DELIVERY DATE</th>
+        <th scope="col">TERMS</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">1</th>
+        <td>Mark</td>
+        <td>Otto</td>
+        <td>@mdo</td>
+      </tr>
+      <tr>
+        <th scope="row">2</th>
+        <td>Jacob</td>
+        <td>Thornton</td>
+        <td>@fat</td>
+      </tr>
+      <tr>
+        <th scope="row">3</th>
+        <td colspan="2">Larry the Bird</td>
+        <td>@twitter</td>
+      </tr>
+    </tbody>
+  </table>
+
+    inventory = models.ManyToManyField(Inventory,blank=True)

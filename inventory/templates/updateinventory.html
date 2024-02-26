@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html>
+<head>
+	<style>
+		h1 {
+			color: black;
+			font-size: 50px;
+			font-weight: bold;
+			text-transform: uppercase;
+			margin-top: 20px;
+			text-align: center;
+			margin: 0 auto;
+		}
+
+		.btn-container {
+			display: flex;
+			justify-content: space-between;
+			margin-top: 20px;
+		}
+
+		.btn-container button,
+		.btn-container input[type="submit"] {
+			margin-right: 10px;
+		}
+
+		.btn-container button a {
+			color: white; /* Set font color to white for other buttons */
+			text-decoration: none; /* Remove underline */
+		}
+
+		/* Style for the Cancel button */
+		.btn-container .cancel-btn a {
+			color: rgb(255, 57, 57); /* Set font color to red for the Cancel button */
+		}
+	</style>
+	<title>{{ title }}</title>
+</head>
+<body>
+	<main role="main" class="container">
+		<div class="jumbotron">
+			<h1>UPDATE INVENTORY</h1>
+			<form method="POST" action="">
+				{% csrf_token %}
+				{{ form|crispy }}
+				<button class="btn btn-dark btn-lg">
+					<a href="{% url 'inventory' %}">Back</a>
+				</button>
+				<input type="submit" name="done" value="Submit" class="btn btn-dark btn-lg pull-right" />
+			</form>
+		</div>
+	</main>
+</body>
+</html>
+
+{% endblock %}

@@ -1,0 +1,182 @@
+        'NAME':'newnemar_db',
+        'USER': 'root',
+        'PASSWORD': 'password',
+        'PORT': 3306,
+        'HOST': '127.0.0.1',
+
+
+
+from django.db import models
+
+class CoMaker(models.Model):
+    last_name = models.CharField('Last Name', max_length=60)
+    first_name = models.CharField('First Name', max_length=60)
+    middle_name = models.CharField('Middle Name', max_length=60)
+    address = models.CharField('Address', max_length=100)
+
+    def __str__(self):
+        return self.last_name + ' ' + self.first_name
+
+class Payment(models.Model):
+    date_release = models.DateTimeField('Date Release')
+    loan_type = models.CharField('Loan Type', max_length=100)
+    selling_price = models.DecimalField('Selling Price', max_digits=10, decimal_places=2)
+    down_payment = models.DecimalField('Down Payment', max_digits=10, decimal_places=2)
+    amount_finance = models.DecimalField('Amount Finance', max_digits=10, decimal_places=2)
+    terms_of_payment = models.CharField('Terms of Payment', max_length=60)
+    monthly_installment = models.DecimalField('Monthly Installment', max_digits=10, decimal_places=2)
+    promisory_note = models.DecimalField('Promisory Note', max_digits=10, decimal_places=2)
+    discount = models.DecimalField('Discount', max_digits=10, decimal_places=2)
+    registration_number = models.CharField('Registration Number', max_length=60)
+    OR_number = models.CharField('OR Number', max_length=60)
+    remarks = models.CharField('Remarks', max_length=60)
+    residence_number = models.CharField('Residence Number', max_length=60)
+    DPS = models.DecimalField('DPS', max_digits=10, decimal_places=2)
+    ROPOA = models.DecimalField('ROPOA', max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return self.OR_number
+
+class Supplier(models.Model):
+    name = models.CharField('Supplier Name', max_length=100)
+    address = models.CharField('Supplier Address', max_length=100)
+
+    def __str__(self):
+        return self.name
+
+class BranchType(models.Model):
+    branch_type = models.CharField('Branch Type', max_length=60)
+
+    def __str__(self):
+        return self.branch_type
+
+class Branch(models.Model):
+    code = models.CharField('Branch Code', max_length=60)
+    name = models.CharField('Branch Name', max_length=60)
+    address = models.CharField('Branch Address', max_length=100)
+    phone_number = models.CharField('Phone Number', max_length=15)
+    branchtype = models.ForeignKey(BranchType, blank=True, null=True, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.code + ' ' + self.name
+
+class Receive(models.Model):
+    RR_number = models.IntegerField('RR Number')
+    PO_number = models.IntegerField('PO Number')
+    supplier = models.ManyToManyField(Supplier, blank=True)
+    branch = models.ManyToManyField(Branch, blank=True)
+    STS_number = models.IntegerField('STS Number')
+    delivery_date = models.DateTimeField('Delivery Date')
+    terms = models.IntegerField('Terms')
+
+    def __str__(self):
+        return self.RR_number + ' ' + self.PO_number
+
+class Motor(models.Model):
+    brand = models.CharField('Brand', max_length=60)
+    model = models.CharField('Model', max_length=60)
+    frame_start = models.CharField('Frame Start', max_length=60)
+    engine_start = models.CharField('Engine Start', max_length=60)
+
+    def __str__(self):
+        return self.brand + ' ' + self.model
+
+class MotorColor(models.Model):
+    code = models.CharField('Motor Color Code', max_length=60)
+    name = models.CharField('Motor Color Name', max_length=60)
+
+    def __str__(self):
+        return self.code + ' ' + self.name
+
+class Inventory(models.Model):
+    branch = models.ManyToManyField(Branch, blank=True)
+    motor = models.ManyToManyField(Motor, blank=True)
+    motor_color = models.ManyToManyField(MotorColor, blank=True)
+    frame_number = models.CharField('Frame Number', max_length=60)
+    engine_number = models.CharField('Engine Number', max_length=60)
+
+    def __str__(self):
+        return self.receive + ' ' + self.motor
+
+class Customer(models.Model):
+    last_name = models.CharField('Last Name', max_length=60)
+    first_name = models.CharField('First Name', max_length=60)
+    middle_name = models.CharField('Middle Name', max_length=60)
+    address = models.CharField('Address', max_length=100)
+    status = models.CharField('Status', max_length=60)
+    phone_number = models.CharField('Phone Number', max_length=15)
+    residence_number = models.CharField('Residence Number', max_length=60)
+    comaker = models.ManyToManyField(CoMaker, blank=True)
+    payment = models.ManyToManyField(Payment, blank=True)
+    inventory = models.ManyToManyField(Inventory, blank=True)
+
+    def __str__(self):
+        return self.last_name + ' ' + self.first_name
+
+class UserType(models.Model):
+    user_type = models.CharField('User Type', max_length=60)
+
+    def __str__(self):
+        return self.user_type
+
+class Account(models.Model):
+    username = models.CharField('Username', max_length=60)
+    password = models.CharField('Password', max_length=60)
+    branch = models.ManyToManyField(Branch, blank=True)
+    user_type = models.ForeignKey(UserType, blank=True, null=True, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.username + ' ' + self.password
+
+class TransactionType(models.Model):
+    name = models.CharField('Transaction Name', max_length=60)
+
+    def __str__(self):
+        return self.name
+
+class Transaction(models.Model):
+    transaction_type = models.ForeignKey(TransactionType, blank=True, null=True, on_delete=models.CASCADE)
+    control_number = models.IntegerField('Control Number')
+    inventory = models.ManyToManyField(Inventory,blank=True)
+    account = models.ManyToManyField(Account, blank=True)
+    transaction_date = models.DateTimeField('Transaction Date')
+
+    def __str__(self):
+        return self.transaction_type + ' ' + self.control_number
+
+
+
+
+
+
+
+from django.contrib import admin
+from .models import CoMaker
+from .models import Payment
+from .models import Supplier
+from .models import BranchType
+from .models import Branch
+from .models import Receive
+from .models import Motor
+from .models import MotorColor
+from .models import Inventory
+from .models import Customer
+from .models import UserType
+from .models import Account
+from .models import TransactionType
+from .models import Transaction
+
+admin.site.register(CoMaker)
+admin.site.register(Payment)
+admin.site.register(Supplier)
+admin.site.register(BranchType)
+admin.site.register(Branch)
+admin.site.register(Receive)
+admin.site.register(Motor)
+admin.site.register(MotorColor)
+admin.site.register(Inventory)
+admin.site.register(Customer)
+admin.site.register(UserType)
+admin.site.register(Account)
+admin.site.register(TransactionType)
+admin.site.register(Transaction)

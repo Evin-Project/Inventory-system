@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{{ title }}</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <style>
+            h1 {
+                color: black;
+                font-size: 50px;
+                font-weight: bold;
+                text-transform: uppercase;
+                margin-top: 20px;
+                text-align: center;
+                margin: 0 auto;
+            }
+
+            .btn-container {
+                display: flex;
+                justify-content: space-between;
+                margin-top: 20px;
+            }
+
+            .btn-container button,
+            .btn-container input[type="submit"] {
+                margin-right: 10px;
+            }
+
+            .btn-container button a {
+                color: white; /* Set font color to white for other buttons */
+                text-decoration: none; /* Remove underline */
+            }
+
+            /* Style for the Cancel button */
+            .btn-container .cancel-btn a {
+                color: #ffffff; /* Set font color to red for the Cancel button */
+            }
+
+            /* Add this to your CSS file or in a <style> block in your HTML head */
+            .add-more-container {
+                text-align: right;
+                margin-top: 10px;
+            }
+
+            .add-form-row {
+                display: inline-block;
+                padding: 8px 16px;
+                background-color: #435d7d; /* Choose your background color */
+                color: #ffffff; /* Choose your text color */
+                text-decoration: none;
+                border-radius: 4px;
+                transition: background-color 0.3s ease;
+            }
+
+            .add-form-row:hover {
+                background-color: #33445d; /* Choose your hover background color */
+            }
+        </style>
+    </head>
+    <body>
+        <main role="main" class="container">
+            <div class="jumbotron" style="background-color: #f1e8e8; color: #ffffff; border: 3px solid black;">
+                <h1>REPO OUT</h1>
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <div class="additional-inventory-fields"></div>
+                    <div style="text-align: right; margin-top: 10px;">
+                        <a href="#" class="add-form-row" style="color: #ffffff;">+ Add More</a>
+                    </div>
+                    <div class="btn-container">
+                        <div>
+                            <button class="btn btn-dark btn-lg" style="background-color: #435d7d;">
+                                <a href="{% url 'addcustomer' %}">ADD NEW CUSTOMER</a>
+                            </button>
+                            <button class="btn btn-dark btn-lg" style="background-color: #435d7d;">
+                                <a href="{% url 'addcomaker' %}">ADD NEW CO-MAKER</a>
+                            </button>
+                            <button class="btn btn-dark btn-lg" style="background-color: #435d7d;">
+                                <a href="{% url 'addpayment' %}">ADD NEW PAYMENT</a>
+                            </button>
+                        </div>
+                        <div>
+                            <!-- Apply the style for the Cancel button -->
+                            <button class="btn btn-dark btn-lg cancel-btn" style="background-color: #b33008;">
+                                <a href="{% url 'inventory' %}">CANCEL</a>
+                            </button>
+                            <input type="submit" value="SUBMIT" class="btn btn-dark btn-lg" style="background-color: #435d7d;">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </main>
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+        <script>
+            $(document).ready(function () {
+                // Counter for dynamic form field names
+                var formCount = 0;
+        
+                // Function to add more inventory fields
+                function addFormRow() {
+                    formCount++;
+                    var newFormRow = `
+                        <div class="form-row" style="margin-top: 10px;">
+                            <div class="col-md-11">
+                                {{ form.inventory }}
+                            </div>
+                            <button type="button" class="btn btn-danger remove-form-row">Remove</button>
+                        </div>
+                    `;
+                    $(".additional-inventory-fields").append(newFormRow);
+                }
+        
+                // Event listener for adding more inventory fields
+                $(".add-form-row").on("click", function (e) {
+                    e.preventDefault(); // Prevent the default behavior
+                    addFormRow();
+                });
+        
+                // Event listener for removing inventory fields
+                $(".additional-inventory-fields").on("click", ".remove-form-row", function () {
+                    $(this).parent().remove();
+                });
+            });
+        </script>
+        <script src="/docs/4.4/dist/js/bootstrap.bundle.min.js" integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+        <script>window.jQuery || document.write('<script src="/docs/4.4/assets/js/vendor/jquery.slim.min.js"><\/script>')</script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js" integrity="sha384-wz5lVPT2CY2L5bFP2ZlDBNThNpz5bFOpYJ0wFiYVxSf6DqD5hZLqVhZDeQHFSeXL" crossorigin="anonymous"></script>
+    </body>
+    </html>
+{% endblock %}
